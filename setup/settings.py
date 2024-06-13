@@ -77,6 +77,14 @@ REST_FRAMEWORK = {
         "rest_framework.throttling.UserRateThrottle",
     ],
     "DEFAULT_THROTTLE_RATES": {"anon": "100/day", "user": "100/day"},
+    # "DEFAULT_PARSER_CLASSES": [
+    #     "rest_framework.parsers.JSONParser",
+    #     "rest_framework_xml.parsers.XMLParser",
+    # ],
+    # "DEFAULT_RENDERER_CLASSES": [
+    #     "rest_framework.renderers.JSONRenderer",
+    #     "rest_framework_xml.renderers.XMLRenderer",
+    # ],
 }
 
 ROOT_URLCONF = "setup.urls"
