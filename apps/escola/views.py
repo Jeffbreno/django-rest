@@ -9,7 +9,8 @@ from apps.escola.serializer import (
     ListaAlunosMatriculadosSerializer,
     AlunoSerializerV2,
 )
-
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 
 class AlunosViewSet(viewsets.ModelViewSet):
@@ -31,8 +32,8 @@ class CursosViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             serializer.save()
             response = Response(serializer.data, status=status.HTTP_201_CREATED)
-            id = str(serializer.data['id'])
-            response['Location'] = request.build_absolute_uri() + id
+            id = str(serializer.data["id"])
+            response["Location"] = request.build_absolute_uri() + id
             return response
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -42,6 +43,10 @@ class MatriculaViewSet(viewsets.ModelViewSet):
     queryset = Matricula.objects.all()
     serializer_class = MatriculaSerializer
     http_method_names = ["get", "post", "put", "path"]
+
+    @method_decorator(cache_page(20))
+    def dispatch(self, *args, **kwargs):
+        return super(MatriculaViewSet, self).dispatch(*args, **kwargs)
 
 
 class ListaMatriculasAluno(generics.ListAPIView):
